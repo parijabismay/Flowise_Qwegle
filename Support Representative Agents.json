@@ -1,0 +1,1115 @@
+{
+  "nodes": [
+    {
+      "id": "supervisor_0",
+      "position": {
+        "x": 343.59847938459717,
+        "y": 124.00657409829381
+      },
+      "type": "customNode",
+      "data": {
+        "id": "supervisor_0",
+        "label": "Supervisor",
+        "version": 1,
+        "name": "supervisor",
+        "type": "Supervisor",
+        "baseClasses": [
+          "Supervisor"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Supervisor Name",
+            "name": "supervisorName",
+            "type": "string",
+            "placeholder": "Supervisor",
+            "default": "Supervisor",
+            "id": "supervisor_0-input-supervisorName-string"
+          },
+          {
+            "label": "Supervisor Prompt",
+            "name": "supervisorPrompt",
+            "type": "string",
+            "description": "Prompt must contains {team_members}",
+            "rows": 4,
+            "default": "You are a supervisor tasked with managing a conversation between the following workers: {team_members}.\nGiven the following user request, respond with the worker to act next.\nEach worker will perform a task and respond with their results and status.\nWhen finished, respond with FINISH.\nSelect strategically to minimize the number of steps taken.",
+            "additionalParams": true,
+            "id": "supervisor_0-input-supervisorPrompt-string"
+          },
+          {
+            "label": "Recursion Limit",
+            "name": "recursionLimit",
+            "type": "number",
+            "description": "Maximum number of times a call can recurse. If not provided, defaults to 100.",
+            "default": 100,
+            "additionalParams": true,
+            "id": "supervisor_0-input-recursionLimit-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, GroqChat. Best result with GPT-4 model",
+            "id": "supervisor_0-input-model-BaseChatModel"
+          },
+          {
+            "label": "Input Moderation",
+            "description": "Detect text that could generate harmful output and prevent it from being sent to the language model",
+            "name": "inputModeration",
+            "type": "Moderation",
+            "optional": true,
+            "list": true,
+            "id": "supervisor_0-input-inputModeration-Moderation"
+          }
+        ],
+        "inputs": {
+          "supervisorName": "Supervisor",
+          "supervisorPrompt": "You are a supervisor tasked with managing a conversation between the following workers: {team_members}.\nGiven the following user request, respond with the worker to act next.\nEach worker will perform a task and respond with their results and status.\nWhen finished, respond with FINISH.\nSelect strategically to minimize the number of steps taken.",
+          "model": "{{chatOpenAI_0.data.instance}}",
+          "recursionLimit": "5",
+          "inputModeration": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "supervisor_0-output-supervisor-Supervisor",
+            "name": "supervisor",
+            "label": "Supervisor",
+            "description": "",
+            "type": "Supervisor"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 430,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 343.59847938459717,
+        "y": 124.00657409829381
+      },
+      "dragging": false
+    },
+    {
+      "id": "worker_1",
+      "position": {
+        "x": 1573.2919579833303,
+        "y": -234.22598124451474
+      },
+      "type": "customNode",
+      "data": {
+        "id": "worker_1",
+        "label": "Worker",
+        "version": 1,
+        "name": "worker",
+        "type": "Worker",
+        "baseClasses": [
+          "Worker"
+        ],
+        "category": "Multi Agents",
+        "inputParams": [
+          {
+            "label": "Worker Name",
+            "name": "workerName",
+            "type": "string",
+            "placeholder": "Worker",
+            "id": "worker_1-input-workerName-string"
+          },
+          {
+            "label": "Worker Prompt",
+            "name": "workerPrompt",
+            "type": "string",
+            "rows": 4,
+            "default": "You are a research assistant who can search for up-to-date info using search engine.",
+            "id": "worker_1-input-workerPrompt-string"
+          },
+          {
+            "label": "Format Prompt Values",
+            "name": "promptValues",
+            "type": "json",
+            "optional": true,
+            "acceptVariable": true,
+            "list": true,
+            "id": "worker_1-input-promptValues-json"
+          },
+          {
+            "label": "Max Iterations",
+            "name": "maxIterations",
+            "type": "number",
+            "optional": true,
+            "id": "worker_1-input-maxIterations-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Tools",
+            "name": "tools",
+            "type": "Tool",
+            "list": true,
+            "optional": true,
+            "id": "worker_1-input-tools-Tool"
+          },
+          {
+            "label": "Supervisor",
+            "name": "supervisor",
+            "type": "Supervisor",
+            "id": "worker_1-input-supervisor-Supervisor"
+          },
+          {
+            "label": "Tool Calling Chat Model",
+            "name": "model",
+            "type": "BaseChatModel",
+            "optional": true,
+            "description": "Only compatible with models that are capable of function calling: ChatOpenAI, ChatMistral, ChatAnthropic, ChatGoogleGenerativeAI, ChatVertexAI, GroqChat. If not specified, supervisor's model will be used",
+            "id": "worker_1-input-model-BaseChatModel"
+          }
+        ],
+        "inputs": {
+          "workerName": "Support Representative",
+          "workerPrompt": "As a representative at {company}, your role is to deliver exceptional customer support. Your objective is to provide the highest quality assistance, ensuring that your answers are comprehensive and based on facts without any assumptions.\n\nYour goal is to strive to be your team's most friendly and helpful support representative.\n\nCraft a detailed and informative response to the customer's inquiry, addressing all aspects of their question. Your response should include references to all sources used to find the answer, including external data or solutions. Ensure your answer is thorough, leaving no questions unanswered while maintaining a friendly and supportive tone throughout.\n\nAlways use the tool provided - search_docs to look for answers.",
+          "tools": [
+            "{{retrieverTool_0.data.instance}}"
+          ],
+          "supervisor": "{{supervisor_0.data.instance}}",
+          "model": "",
+          "promptValues": "{\"company\":\"Qwegle\"}",
+          "maxIterations": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "worker_1-output-worker-Worker",
+            "name": "worker",
+            "label": "Worker",
+            "description": "",
+            "type": "Worker"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 807,
+      "positionAbsolute": {
+        "x": 1573.2919579833303,
+        "y": -234.22598124451474
+      },
+      "selected": false,
+      "dragging": false
+    },
+    {
+      "id": "retrieverTool_0",
+      "position": {
+        "x": 1141.611591929317,
+        "y": -656.4678225018218
+      },
+      "type": "customNode",
+      "data": {
+        "id": "retrieverTool_0",
+        "label": "Retriever Tool",
+        "version": 2,
+        "name": "retrieverTool",
+        "type": "RetrieverTool",
+        "baseClasses": [
+          "RetrieverTool",
+          "DynamicTool",
+          "Tool",
+          "StructuredTool",
+          "Runnable"
+        ],
+        "category": "Tools",
+        "description": "Use a retriever as allowed tool for agent",
+        "inputParams": [
+          {
+            "label": "Retriever Name",
+            "name": "name",
+            "type": "string",
+            "placeholder": "search_state_of_union",
+            "id": "retrieverTool_0-input-name-string"
+          },
+          {
+            "label": "Retriever Description",
+            "name": "description",
+            "type": "string",
+            "description": "When should agent uses to retrieve documents",
+            "rows": 3,
+            "placeholder": "Searches and returns documents regarding the state-of-the-union.",
+            "id": "retrieverTool_0-input-description-string"
+          },
+          {
+            "label": "Return Source Documents",
+            "name": "returnSourceDocuments",
+            "type": "boolean",
+            "optional": true,
+            "id": "retrieverTool_0-input-returnSourceDocuments-boolean"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Retriever",
+            "name": "retriever",
+            "type": "BaseRetriever",
+            "id": "retrieverTool_0-input-retriever-BaseRetriever"
+          }
+        ],
+        "inputs": {
+          "name": "search_docs",
+          "description": "Search and return information about any products on the website. Always give priority to this tool",
+          "retriever": "{{pinecone_0.data.instance}}",
+          "returnSourceDocuments": true
+        },
+        "outputAnchors": [
+          {
+            "id": "retrieverTool_0-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable",
+            "name": "retrieverTool",
+            "label": "RetrieverTool",
+            "description": "Use a retriever as allowed tool for agent",
+            "type": "RetrieverTool | DynamicTool | Tool | StructuredTool | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 601,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 1141.611591929317,
+        "y": -656.4678225018218
+      },
+      "dragging": false
+    },
+    {
+      "id": "pinecone_0",
+      "position": {
+        "x": 761.6497496019833,
+        "y": -629.1623421694984
+      },
+      "type": "customNode",
+      "data": {
+        "id": "pinecone_0",
+        "label": "Pinecone",
+        "version": 3,
+        "name": "pinecone",
+        "type": "Pinecone",
+        "baseClasses": [
+          "Pinecone",
+          "VectorStoreRetriever",
+          "BaseRetriever"
+        ],
+        "category": "Vector Stores",
+        "description": "Upsert embedded data and perform similarity or mmr search using Pinecone, a leading fully managed hosted vector database",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "pineconeApi"
+            ],
+            "id": "pinecone_0-input-credential-credential"
+          },
+          {
+            "label": "Pinecone Index",
+            "name": "pineconeIndex",
+            "type": "string",
+            "id": "pinecone_0-input-pineconeIndex-string"
+          },
+          {
+            "label": "Pinecone Namespace",
+            "name": "pineconeNamespace",
+            "type": "string",
+            "placeholder": "my-first-namespace",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-pineconeNamespace-string"
+          },
+          {
+            "label": "Pinecone Metadata Filter",
+            "name": "pineconeMetadataFilter",
+            "type": "json",
+            "optional": true,
+            "additionalParams": true,
+            "id": "pinecone_0-input-pineconeMetadataFilter-json"
+          },
+          {
+            "label": "Top K",
+            "name": "topK",
+            "description": "Number of top results to fetch. Default to 4",
+            "placeholder": "4",
+            "type": "number",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-topK-number"
+          },
+          {
+            "label": "Search Type",
+            "name": "searchType",
+            "type": "options",
+            "default": "similarity",
+            "options": [
+              {
+                "label": "Similarity",
+                "name": "similarity"
+              },
+              {
+                "label": "Max Marginal Relevance",
+                "name": "mmr"
+              }
+            ],
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-searchType-options"
+          },
+          {
+            "label": "Fetch K (for MMR Search)",
+            "name": "fetchK",
+            "description": "Number of initial documents to fetch for MMR reranking. Default to 20. Used only when the search type is MMR",
+            "placeholder": "20",
+            "type": "number",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-fetchK-number"
+          },
+          {
+            "label": "Lambda (for MMR Search)",
+            "name": "lambda",
+            "description": "Number between 0 and 1 that determines the degree of diversity among the results, where 0 corresponds to maximum diversity and 1 to minimum diversity. Used only when the search type is MMR",
+            "placeholder": "0.5",
+            "type": "number",
+            "additionalParams": true,
+            "optional": true,
+            "id": "pinecone_0-input-lambda-number"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Document",
+            "name": "document",
+            "type": "Document",
+            "list": true,
+            "optional": true,
+            "id": "pinecone_0-input-document-Document"
+          },
+          {
+            "label": "Embeddings",
+            "name": "embeddings",
+            "type": "Embeddings",
+            "id": "pinecone_0-input-embeddings-Embeddings"
+          },
+          {
+            "label": "Record Manager",
+            "name": "recordManager",
+            "type": "RecordManager",
+            "description": "Keep track of the record to prevent duplication",
+            "optional": true,
+            "id": "pinecone_0-input-recordManager-RecordManager"
+          }
+        ],
+        "inputs": {
+          "document": [
+            "{{cheerioWebScraper_0.data.instance}}"
+          ],
+          "embeddings": "{{openAIEmbeddings_0.data.instance}}",
+          "recordManager": "",
+          "pineconeIndex": "qwegle",
+          "pineconeNamespace": "pinecone-flowise-docs",
+          "pineconeMetadataFilter": "",
+          "topK": "",
+          "searchType": "similarity",
+          "fetchK": "",
+          "lambda": ""
+        },
+        "outputAnchors": [
+          {
+            "name": "output",
+            "label": "Output",
+            "type": "options",
+            "description": "",
+            "options": [
+              {
+                "id": "pinecone_0-output-retriever-Pinecone|VectorStoreRetriever|BaseRetriever",
+                "name": "retriever",
+                "label": "Pinecone Retriever",
+                "description": "",
+                "type": "Pinecone | VectorStoreRetriever | BaseRetriever"
+              },
+              {
+                "id": "pinecone_0-output-vectorStore-Pinecone|VectorStore",
+                "name": "vectorStore",
+                "label": "Pinecone Vector Store",
+                "description": "",
+                "type": "Pinecone | VectorStore"
+              }
+            ],
+            "default": "retriever"
+          }
+        ],
+        "outputs": {
+          "output": "retriever"
+        },
+        "selected": false
+      },
+      "width": 300,
+      "height": 603,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 761.6497496019833,
+        "y": -629.1623421694984
+      },
+      "dragging": false
+    },
+    {
+      "id": "openAIEmbeddings_0",
+      "position": {
+        "x": 373.4730229546882,
+        "y": -480.5312248256105
+      },
+      "type": "customNode",
+      "data": {
+        "id": "openAIEmbeddings_0",
+        "label": "OpenAI Embeddings",
+        "version": 4,
+        "name": "openAIEmbeddings",
+        "type": "OpenAIEmbeddings",
+        "baseClasses": [
+          "OpenAIEmbeddings",
+          "Embeddings"
+        ],
+        "category": "Embeddings",
+        "description": "OpenAI API to generate embeddings for a given text",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "openAIApi"
+            ],
+            "id": "openAIEmbeddings_0-input-credential-credential"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "default": "text-embedding-ada-002",
+            "id": "openAIEmbeddings_0-input-modelName-asyncOptions"
+          },
+          {
+            "label": "Strip New Lines",
+            "name": "stripNewLines",
+            "type": "boolean",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-stripNewLines-boolean"
+          },
+          {
+            "label": "Batch Size",
+            "name": "batchSize",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-batchSize-number"
+          },
+          {
+            "label": "Timeout",
+            "name": "timeout",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-timeout-number"
+          },
+          {
+            "label": "BasePath",
+            "name": "basepath",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-basepath-string"
+          },
+          {
+            "label": "Dimensions",
+            "name": "dimensions",
+            "type": "number",
+            "optional": true,
+            "additionalParams": true,
+            "id": "openAIEmbeddings_0-input-dimensions-number"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "modelName": "text-embedding-ada-002",
+          "stripNewLines": "",
+          "batchSize": "",
+          "timeout": "",
+          "basepath": "",
+          "dimensions": ""
+        },
+        "outputAnchors": [
+          {
+            "id": "openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings",
+            "name": "openAIEmbeddings",
+            "label": "OpenAIEmbeddings",
+            "description": "OpenAI API to generate embeddings for a given text",
+            "type": "OpenAIEmbeddings | Embeddings"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 421,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 373.4730229546882,
+        "y": -480.5312248256105
+      },
+      "dragging": false
+    },
+    {
+      "id": "chatOpenAI_0",
+      "position": {
+        "x": -29.209923556934555,
+        "y": -53.48197675171315
+      },
+      "type": "customNode",
+      "data": {
+        "id": "chatOpenAI_0",
+        "label": "ChatOpenAI",
+        "version": 6,
+        "name": "chatOpenAI",
+        "type": "ChatOpenAI",
+        "baseClasses": [
+          "ChatOpenAI",
+          "BaseChatModel",
+          "BaseLanguageModel",
+          "Runnable"
+        ],
+        "category": "Chat Models",
+        "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
+        "inputParams": [
+          {
+            "label": "Connect Credential",
+            "name": "credential",
+            "type": "credential",
+            "credentialNames": [
+              "openAIApi"
+            ],
+            "id": "chatOpenAI_0-input-credential-credential"
+          },
+          {
+            "label": "Model Name",
+            "name": "modelName",
+            "type": "asyncOptions",
+            "loadMethod": "listModels",
+            "default": "gpt-3.5-turbo",
+            "id": "chatOpenAI_0-input-modelName-asyncOptions"
+          },
+          {
+            "label": "Temperature",
+            "name": "temperature",
+            "type": "number",
+            "step": 0.1,
+            "default": 0.9,
+            "optional": true,
+            "id": "chatOpenAI_0-input-temperature-number"
+          },
+          {
+            "label": "Max Tokens",
+            "name": "maxTokens",
+            "type": "number",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-maxTokens-number"
+          },
+          {
+            "label": "Top Probability",
+            "name": "topP",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-topP-number"
+          },
+          {
+            "label": "Frequency Penalty",
+            "name": "frequencyPenalty",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-frequencyPenalty-number"
+          },
+          {
+            "label": "Presence Penalty",
+            "name": "presencePenalty",
+            "type": "number",
+            "step": 0.1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-presencePenalty-number"
+          },
+          {
+            "label": "Timeout",
+            "name": "timeout",
+            "type": "number",
+            "step": 1,
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-timeout-number"
+          },
+          {
+            "label": "BasePath",
+            "name": "basepath",
+            "type": "string",
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-basepath-string"
+          },
+          {
+            "label": "BaseOptions",
+            "name": "baseOptions",
+            "type": "json",
+            "optional": true,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-baseOptions-json"
+          },
+          {
+            "label": "Allow Image Uploads",
+            "name": "allowImageUploads",
+            "type": "boolean",
+            "description": "Automatically uses gpt-4-vision-preview when image is being uploaded from chat. Only works with LLMChain, Conversation Chain, ReAct Agent, and Conversational Agent",
+            "default": false,
+            "optional": true,
+            "id": "chatOpenAI_0-input-allowImageUploads-boolean"
+          },
+          {
+            "label": "Image Resolution",
+            "description": "This parameter controls the resolution in which the model views the image.",
+            "name": "imageResolution",
+            "type": "options",
+            "options": [
+              {
+                "label": "Low",
+                "name": "low"
+              },
+              {
+                "label": "High",
+                "name": "high"
+              },
+              {
+                "label": "Auto",
+                "name": "auto"
+              }
+            ],
+            "default": "low",
+            "optional": false,
+            "additionalParams": true,
+            "id": "chatOpenAI_0-input-imageResolution-options"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Cache",
+            "name": "cache",
+            "type": "BaseCache",
+            "optional": true,
+            "id": "chatOpenAI_0-input-cache-BaseCache"
+          }
+        ],
+        "inputs": {
+          "cache": "",
+          "modelName": "gpt-4o",
+          "temperature": "0",
+          "maxTokens": "",
+          "topP": "",
+          "frequencyPenalty": "",
+          "presencePenalty": "",
+          "timeout": "",
+          "basepath": "",
+          "baseOptions": "",
+          "allowImageUploads": "",
+          "imageResolution": "low"
+        },
+        "outputAnchors": [
+          {
+            "id": "chatOpenAI_0-output-chatOpenAI-ChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+            "name": "chatOpenAI",
+            "label": "ChatOpenAI",
+            "description": "Wrapper around OpenAI large language models that use the Chat endpoint",
+            "type": "ChatOpenAI | BaseChatModel | BaseLanguageModel | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 668,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -29.209923556934555,
+        "y": -53.48197675171315
+      },
+      "dragging": false
+    },
+    {
+      "id": "cheerioWebScraper_0",
+      "position": {
+        "x": 11.928422863242801,
+        "y": -490.22681645278584
+      },
+      "type": "customNode",
+      "data": {
+        "id": "cheerioWebScraper_0",
+        "label": "Cheerio Web Scraper",
+        "version": 1.1,
+        "name": "cheerioWebScraper",
+        "type": "Document",
+        "baseClasses": [
+          "Document"
+        ],
+        "category": "Document Loaders",
+        "description": "Load data from webpages",
+        "inputParams": [
+          {
+            "label": "URL",
+            "name": "url",
+            "type": "string",
+            "id": "cheerioWebScraper_0-input-url-string"
+          },
+          {
+            "label": "Get Relative Links Method",
+            "name": "relativeLinksMethod",
+            "type": "options",
+            "description": "Select a method to retrieve relative links",
+            "options": [
+              {
+                "label": "Web Crawl",
+                "name": "webCrawl",
+                "description": "Crawl relative links from HTML URL"
+              },
+              {
+                "label": "Scrape XML Sitemap",
+                "name": "scrapeXMLSitemap",
+                "description": "Scrape relative links from XML sitemap URL"
+              }
+            ],
+            "default": "webCrawl",
+            "optional": true,
+            "additionalParams": true,
+            "id": "cheerioWebScraper_0-input-relativeLinksMethod-options"
+          },
+          {
+            "label": "Get Relative Links Limit",
+            "name": "limit",
+            "type": "number",
+            "optional": true,
+            "default": "10",
+            "additionalParams": true,
+            "description": "Only used when \"Get Relative Links Method\" is selected. Set 0 to retrieve all relative links, default limit is 10.",
+            "warning": "Retrieving all links might take long time, and all links will be upserted again if the flow's state changed (eg: different URL, chunk size, etc)",
+            "id": "cheerioWebScraper_0-input-limit-number"
+          },
+          {
+            "label": "Selector (CSS)",
+            "name": "selector",
+            "type": "string",
+            "description": "Specify a CSS selector to select the content to be extracted",
+            "optional": true,
+            "additionalParams": true,
+            "id": "cheerioWebScraper_0-input-selector-string"
+          },
+          {
+            "label": "Additional Metadata",
+            "name": "metadata",
+            "type": "json",
+            "description": "Additional metadata to be added to the extracted documents",
+            "optional": true,
+            "additionalParams": true,
+            "id": "cheerioWebScraper_0-input-metadata-json"
+          },
+          {
+            "label": "Omit Metadata Keys",
+            "name": "omitMetadataKeys",
+            "type": "string",
+            "rows": 4,
+            "description": "Each document loader comes with a default set of metadata keys that are extracted from the document. You can use this field to omit some of the default metadata keys. The value should be a list of keys, seperated by comma. Use * to omit all metadata keys execept the ones you specify in the Additional Metadata field",
+            "placeholder": "key1, key2, key3.nestedKey1",
+            "optional": true,
+            "additionalParams": true,
+            "id": "cheerioWebScraper_0-input-omitMetadataKeys-string"
+          }
+        ],
+        "inputAnchors": [
+          {
+            "label": "Text Splitter",
+            "name": "textSplitter",
+            "type": "TextSplitter",
+            "optional": true,
+            "id": "cheerioWebScraper_0-input-textSplitter-TextSplitter"
+          }
+        ],
+        "inputs": {
+          "url": "https://www.qwegle.com/",
+          "textSplitter": "{{htmlToMarkdownTextSplitter_0.data.instance}}",
+          "relativeLinksMethod": "webCrawl",
+          "limit": "100",
+          "selector": "",
+          "metadata": "",
+          "omitMetadataKeys": "",
+          "selectedLinks": [
+            "https://www.qwegle.com",
+            "https://www.qwegle.com/cdn-cgi/l/email-protection",
+            "https://www.qwegle.com/about",
+            "https://www.qwegle.com/sap-financial-accounting-fi",
+            "https://www.qwegle.com/sap-materials-management-mm",
+            "https://www.qwegle.com/sap-supply-chain-management-fscm",
+            "https://www.qwegle.com/sap-sales-and-distribution-sd",
+            "https://www.qwegle.com/sap-controlling-co",
+            "https://www.qwegle.com/sap-logistics-execution-le",
+            "https://www.qwegle.com/sap-production-planning-pp",
+            "https://www.qwegle.com/sap-quality-management-qm",
+            "https://www.qwegle.com/sap-plant-maintenance-pm",
+            "https://www.qwegle.com/sap-project-system-ps",
+            "https://www.qwegle.com/sap-human-resources-management-hrm",
+            "https://www.qwegle.com/wordpress",
+            "https://www.qwegle.com/joomla",
+            "https://www.qwegle.com/django",
+            "https://www.qwegle.com/headless",
+            "https://www.qwegle.com/data-storage",
+            "https://www.qwegle.com/asp-net-core",
+            "https://www.qwegle.com/microsoft-sql",
+            "https://www.qwegle.com/sharepoint-o365-development",
+            "https://www.qwegle.com/ms-power-bi",
+            "https://www.qwegle.com/microsoft-flow",
+            "https://www.qwegle.com/microsoft-power-apps",
+            "https://www.qwegle.com/microsoft-azure-stack",
+            "https://www.qwegle.com/flutter-applications",
+            "https://www.qwegle.com/ionic-applications",
+            "https://www.qwegle.com/kotlin-native-android",
+            "https://www.qwegle.com/swift-native-ios",
+            "https://www.qwegle.com/user-experience",
+            "https://www.qwegle.com/user-interface",
+            "https://www.qwegle.com/brand-marketing-and-designing",
+            "https://www.qwegle.com/video-creation",
+            "https://www.qwegle.com/logo-designing",
+            "https://www.qwegle.com/web-development",
+            "https://www.qwegle.com/wordpress-development",
+            "https://www.qwegle.com/ecommerce-development",
+            "https://www.qwegle.com/migrations-data-population",
+            "https://www.qwegle.com/mobile-application-development",
+            "https://www.qwegle.com/artificial-intelligence",
+            "https://www.qwegle.com/custom-development",
+            "https://www.qwegle.com/manual-testing",
+            "https://www.qwegle.com/automation-testing",
+            "https://www.qwegle.com/agile-methodologies",
+            "https://www.qwegle.com/ci-cd-pipeline",
+            "https://www.qwegle.com/branding",
+            "https://www.qwegle.com/search-engine-optimization",
+            "https://www.qwegle.com/social-media-optimization",
+            "https://www.qwegle.com/traffic-generator",
+            "https://www.qwegle.com/saas-development-company",
+            "https://www.qwegle.com/healthcare",
+            "https://www.qwegle.com/real-estate-travel",
+            "https://www.qwegle.com/finance-insurance",
+            "https://www.qwegle.com/profit-calculator",
+            "https://www.qwegle.com/contact",
+            "https://www.qwegle.com/contact/?share=facebook",
+            "https://www.qwegle.com/r.php?locale=or_IN",
+            "https://www.qwegle.com/reg",
+            "https://www.qwegle.com/about-qwegle-software-development-company",
+            "https://www.qwegle.com/job-openings",
+            "https://www.qwegle.com/career/ui-ux-developer-2-years-of-experience",
+            "https://www.qwegle.com/job-category/ui-ux",
+            "https://www.qwegle.com/author/bugcry",
+            "https://www.qwegle.com/partnering-with-designrush-streamlining-the-search-for-top-software-development-agencies",
+            "https://www.qwegle.com/category/uncategorized",
+            "https://www.qwegle.com/leveraging-artificial-intelligence-to-boost-your-e-commerce-platform",
+            "https://www.qwegle.com/category/wordpress",
+            "https://www.qwegle.com/author/honey",
+            "https://www.qwegle.com/category/wordpress/e-commerce",
+            "https://www.qwegle.com/category/general",
+            "https://www.qwegle.com/category/tech/seo",
+            "https://www.qwegle.com/category/tech",
+            "https://www.qwegle.com/open-source-collaboration",
+            "https://www.qwegle.com/author/anish",
+            "https://www.qwegle.com/the-future-of-erp-and-crm-systems",
+            "https://www.qwegle.com/the-future-of-erp-and-crm-systems/?share=facebook",
+            "https://www.qwegle.com/login",
+            "https://www.qwegle.com/terms-and-conditions",
+            "https://www.qwegle.com/terms-and-conditions/?share=facebook",
+            "https://www.qwegle.com/lite",
+            "https://www.qwegle.com/privacy-policy",
+            "https://www.qwegle.com/category/tech/blockchain",
+            "https://www.qwegle.com/blockchain",
+            "https://www.qwegle.com/blockchain/?share=facebook",
+            "https://www.qwegle.com/places",
+            "https://www.qwegle.com/games",
+            "https://www.qwegle.com/marketplace",
+            "https://www.qwegle.com/fundraisers",
+            "https://www.qwegle.com/biz/directory",
+            "https://www.qwegle.com/votinginformationcenter/?entry_point=c2l0ZQ%3D%3D",
+            "https://www.qwegle.com/privacy/policy/?entry_point=facebook_page_footer",
+            "https://www.qwegle.com/privacy/center/?entry_point=facebook_page_footer",
+            "https://www.qwegle.com/groups/discover",
+            "https://www.qwegle.com/ad_campaign/landing.php?placement=pflo&campaign_id=402047449186&nav_source=unknown&extra_1=auto",
+            "https://www.qwegle.com/pages/create/?ref_type=site_footer",
+            "https://www.qwegle.com/careers/?ref=pf",
+            "https://www.qwegle.com/policies/cookies",
+            "https://www.qwegle.com/policies?ref=pf",
+            "https://www.qwegle.com/help/?ref=pf"
+          ]
+        },
+        "outputAnchors": [
+          {
+            "id": "cheerioWebScraper_0-output-cheerioWebScraper-Document",
+            "name": "cheerioWebScraper",
+            "label": "Document",
+            "description": "Load data from webpages",
+            "type": "Document"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 423,
+      "selected": false,
+      "positionAbsolute": {
+        "x": 11.928422863242801,
+        "y": -490.22681645278584
+      },
+      "dragging": false
+    },
+    {
+      "id": "htmlToMarkdownTextSplitter_0",
+      "position": {
+        "x": -338.0697964286725,
+        "y": -438.5820144037296
+      },
+      "type": "customNode",
+      "data": {
+        "id": "htmlToMarkdownTextSplitter_0",
+        "label": "HtmlToMarkdown Text Splitter",
+        "version": 1,
+        "name": "htmlToMarkdownTextSplitter",
+        "type": "HtmlToMarkdownTextSplitter",
+        "baseClasses": [
+          "HtmlToMarkdownTextSplitter",
+          "MarkdownTextSplitter",
+          "RecursiveCharacterTextSplitter",
+          "TextSplitter",
+          "BaseDocumentTransformer",
+          "Runnable"
+        ],
+        "category": "Text Splitters",
+        "description": "Converts Html to Markdown and then split your content into documents based on the Markdown headers",
+        "inputParams": [
+          {
+            "label": "Chunk Size",
+            "name": "chunkSize",
+            "type": "number",
+            "description": "Number of characters in each chunk. Default is 1000.",
+            "default": 1000,
+            "optional": true,
+            "id": "htmlToMarkdownTextSplitter_0-input-chunkSize-number"
+          },
+          {
+            "label": "Chunk Overlap",
+            "name": "chunkOverlap",
+            "type": "number",
+            "description": "Number of characters to overlap between chunks. Default is 200.",
+            "default": 200,
+            "optional": true,
+            "id": "htmlToMarkdownTextSplitter_0-input-chunkOverlap-number"
+          }
+        ],
+        "inputAnchors": [],
+        "inputs": {
+          "chunkSize": 1000,
+          "chunkOverlap": 200
+        },
+        "outputAnchors": [
+          {
+            "id": "htmlToMarkdownTextSplitter_0-output-htmlToMarkdownTextSplitter-HtmlToMarkdownTextSplitter|MarkdownTextSplitter|RecursiveCharacterTextSplitter|TextSplitter|BaseDocumentTransformer|Runnable",
+            "name": "htmlToMarkdownTextSplitter",
+            "label": "HtmlToMarkdownTextSplitter",
+            "description": "Converts Html to Markdown and then split your content into documents based on the Markdown headers",
+            "type": "HtmlToMarkdownTextSplitter | MarkdownTextSplitter | RecursiveCharacterTextSplitter | TextSplitter | BaseDocumentTransformer | Runnable"
+          }
+        ],
+        "outputs": {},
+        "selected": false
+      },
+      "width": 300,
+      "height": 376,
+      "selected": false,
+      "positionAbsolute": {
+        "x": -338.0697964286725,
+        "y": -438.5820144037296
+      },
+      "dragging": false
+    }
+  ],
+  "edges": [
+    {
+      "source": "openAIEmbeddings_0",
+      "sourceHandle": "openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings",
+      "target": "pinecone_0",
+      "targetHandle": "pinecone_0-input-embeddings-Embeddings",
+      "type": "buttonedge",
+      "id": "openAIEmbeddings_0-openAIEmbeddings_0-output-openAIEmbeddings-OpenAIEmbeddings|Embeddings-pinecone_0-pinecone_0-input-embeddings-Embeddings"
+    },
+    {
+      "source": "pinecone_0",
+      "sourceHandle": "pinecone_0-output-retriever-Pinecone|VectorStoreRetriever|BaseRetriever",
+      "target": "retrieverTool_0",
+      "targetHandle": "retrieverTool_0-input-retriever-BaseRetriever",
+      "type": "buttonedge",
+      "id": "pinecone_0-pinecone_0-output-retriever-Pinecone|VectorStoreRetriever|BaseRetriever-retrieverTool_0-retrieverTool_0-input-retriever-BaseRetriever"
+    },
+    {
+      "source": "retrieverTool_0",
+      "sourceHandle": "retrieverTool_0-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable",
+      "target": "worker_1",
+      "targetHandle": "worker_1-input-tools-Tool",
+      "type": "buttonedge",
+      "id": "retrieverTool_0-retrieverTool_0-output-retrieverTool-RetrieverTool|DynamicTool|Tool|StructuredTool|Runnable-worker_1-worker_1-input-tools-Tool"
+    },
+    {
+      "source": "supervisor_0",
+      "sourceHandle": "supervisor_0-output-supervisor-Supervisor",
+      "target": "worker_1",
+      "targetHandle": "worker_1-input-supervisor-Supervisor",
+      "type": "buttonedge",
+      "id": "supervisor_0-supervisor_0-output-supervisor-Supervisor-worker_1-worker_1-input-supervisor-Supervisor"
+    },
+    {
+      "source": "chatOpenAI_0",
+      "sourceHandle": "chatOpenAI_0-output-chatOpenAI-ChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable",
+      "target": "supervisor_0",
+      "targetHandle": "supervisor_0-input-model-BaseChatModel",
+      "type": "buttonedge",
+      "id": "chatOpenAI_0-chatOpenAI_0-output-chatOpenAI-ChatOpenAI|BaseChatModel|BaseLanguageModel|Runnable-supervisor_0-supervisor_0-input-model-BaseChatModel"
+    },
+    {
+      "source": "htmlToMarkdownTextSplitter_0",
+      "sourceHandle": "htmlToMarkdownTextSplitter_0-output-htmlToMarkdownTextSplitter-HtmlToMarkdownTextSplitter|MarkdownTextSplitter|RecursiveCharacterTextSplitter|TextSplitter|BaseDocumentTransformer|Runnable",
+      "target": "cheerioWebScraper_0",
+      "targetHandle": "cheerioWebScraper_0-input-textSplitter-TextSplitter",
+      "type": "buttonedge",
+      "id": "htmlToMarkdownTextSplitter_0-htmlToMarkdownTextSplitter_0-output-htmlToMarkdownTextSplitter-HtmlToMarkdownTextSplitter|MarkdownTextSplitter|RecursiveCharacterTextSplitter|TextSplitter|BaseDocumentTransformer|Runnable-cheerioWebScraper_0-cheerioWebScraper_0-input-textSplitter-TextSplitter"
+    },
+    {
+      "source": "cheerioWebScraper_0",
+      "sourceHandle": "cheerioWebScraper_0-output-cheerioWebScraper-Document",
+      "target": "pinecone_0",
+      "targetHandle": "pinecone_0-input-document-Document",
+      "type": "buttonedge",
+      "id": "cheerioWebScraper_0-cheerioWebScraper_0-output-cheerioWebScraper-Document-pinecone_0-pinecone_0-input-document-Document"
+    }
+  ]
+}
